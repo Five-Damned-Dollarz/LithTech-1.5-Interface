@@ -8,6 +8,7 @@
 	#include "clientshell_de.h"
 	#include "common_de.h"
 	#include "CSBase.h"
+	#include "lvideomgr.h"
 
 													
 
@@ -315,6 +316,11 @@
 			short		(*GetMusicVolume)();
 			void		(*SetMusicVolume)( short wVolume );
 
+		// Unknown functions, do allocate/create instances of some class that has a bunch of threading
+
+			void (*UnknownFunction1)();
+			void (*UnknownFunction2)();
+
 
 		// Sound functions.
 
@@ -331,6 +337,9 @@
 
 			// Initializes the sound driver.
 			DRESULT			(*InitSound)( InitSoundInfo *pSoundInfo );
+
+			// Unknown function, possibly TermSound
+			void (*UnknownFunction3)();
 
 			// Volume controls between 0 - 100
 			unsigned short	( *GetSoundVolume )();
@@ -678,6 +687,9 @@
 			// Clears all the keyboard, command, and axis offset input.
 			DRESULT		(*ClearInput)();
 
+			// Something related to double click timing, not sure how it's returned
+			void (*UnknownDoubleClickFunction)();
+
 			// Returns a list of DeviceBindings for a given device.  You must call FreeDeviceBindings()
 			// to free the list.
 			DeviceBinding*	(*GetDeviceBindings)(DDWORD nDevice);
@@ -831,6 +843,14 @@
 			DDWORD		(*GetObjectFlags)(HLOCALOBJ hObj);
 			void		(*SetObjectFlags)(HLOCALOBJ hObj, DDWORD flags);
 
+			// Get/Set object state
+			DDWORD (*GetObjectState)(HOBJECT hObj);
+			DRESULT	(*SetObjectState)(HOBJECT hObj, DDWORD state);
+
+			// Unknown what these flags are for.
+			DDWORD (*GetObjectUnknownFlags)(HOBJECT hObj);
+			DRESULT	(*SetObjectUnknownFlags)(HOBJECT hObj, DDWORD flags);
+
 			// Get/Set object user flags.  Can't set user flags on an object
 			// created on the server.
 			DRESULT		(*GetObjectUserFlags)(HLOCALOBJ hObj, DDWORD *pFlags);
@@ -843,6 +863,16 @@
 			// User data for the object..
 			void*		(*GetObjectUserData)(HLOCALOBJ hObj);
 			void		(*SetObjectUserData)(HLOCALOBJ hObj, void *pData);
+
+
+		// These require a WorldModel or Container
+		DRESULT (*UnknownWorldFunction1)(HOBJECT hObj, void *pUnknown);
+		DRESULT (*UnknownWorldFunction2)(HOBJECT hObj, int index, void *pUnknown);
+		DRESULT (*UnknownWorldFunction3)(HOBJECT hObj, int index, int unknown, void *pUnknown);
+
+
+		// I think this checks if a key/mouse/joystick is mapped
+		DDWORD (*UnknownInputFunction)(void *pUnk1, void *pUnk2);
 
 
 		// Camera functions.
@@ -939,7 +969,16 @@
 			// Adds a line to the end of the line system's list.
 			HDELINE		(*AddLine)(HLOCALOBJ hObj, DELine *pLine);
 			void		(*RemoveLine)(HLOCALOBJ hObj, HDELINE hLine);
+			// I don't know.
+			void (*RemoveLine)(HDELINE hLine, HLOCALOBJ hObj);
 
+		// Object Dimensions?
+			void (*SetObjectDims)(HOBJECT hObj, DVector dims);
+			DVector (*GetObjectDims)(HOBJECT hObj);
+
+			void (*UnknownFunction4)(HOBJECT hObj, DDWORD unknown);
+			DDWORD (*UnknownFunction5)(HOBJECT hObj); // get center width or height?
+			DRESULT (*UnknownFunction6)(HOBJECT hObj, float unknown); // set dimensions?
 
 		// Poly grid manipulation.
 
@@ -1002,6 +1041,9 @@
 			// Pass in INVALID_HPOLY to un-clip the sprite.
 			DRESULT	(*ClipSprite)(HLOCALOBJ hObj, HPOLY hPoly);
 
+			DRESULT (*SetSpriteUnknown)(HLOCALOBJ hObj, void *pUnknown);
+			DRESULT (*GetSpriteUnknown)(HLOCALOBJ hObj, void *pUnknown);
+
 			// Get the sprite control interface for a sprite.  Returns DE_INVALIDPARAMS
 			// if the object is not a sprite.
 			virtual DRESULT GetSpriteControl(HLOCALOBJ hObj, SpriteControl* &pControl)=0;
@@ -1032,6 +1074,20 @@
 			// Returns the animation the model is currently on.  (DDWORD)-1 if none.
 			DDWORD	(*GetModelAnimation)(HLOCALOBJ hObj);
 			void	(*SetModelAnimation)(HLOCALOBJ hObj, DDWORD iAnim);
+
+			// Unknown functions
+			void (*GetModelUnknown)(HLOCALOBJ hObj, DVector *pUnknown);
+			void (*SetModelUnknown)(HLOCALOBJ hObj, DVector *pUnknown);
+
+			void (*UnknownModelFunction1)(HLOCALOBJ hObj, void *pUnknown);
+			// Unknown return struct
+			void *(*UnknownModelFunction2)(HLOCALOBJ hObj, DDWORD index);
+			void (*SetModelGlobalFunction)(DBYTE unknown);
+			void (*UnknownModelFunction3)(HLOCALOBJ hObj);
+			void *(*UnknownModelFunction4)(HLOCALOBJ hObj, DDWORD index);
+			void *(*UnknownModelFunction5)(HLOCALOBJ hObj);
+			void *(*UnknownModelFunction6)(HLOCALOBJ hObj);
+			DRESULT (*UnknownWorldFunction7)(HLOCALOBJ hObj, DDWORD index, void *pUnknown);
 
 			// Get an animation index from a model.
 			// Returns -1 if the animation doesn't exist (or if the object isn't a model).
@@ -1136,10 +1192,15 @@
 			// Gets the tcp/ip address of the main driver if available.
 			DRESULT (*GetTcpIpAddress)(char* sAddress, DDWORD dwBufferSize);
 
+			// pUnknown should be populated with 2 shorts then 12 floats
+			DRESULT (*UnknownFunction7)(DVector unk1, DVector unk2, DVector unk3, DVector unk4, D_WORD unk5, float *pUnknown);
+
 	protected:
 		
 			CommonLT	*m_pCommonLT;
 			CPhysicsLT	*m_pPhysicsLT;
+
+			LVideoMgr	*m_pVideoMgr;
 	};
 
 

@@ -302,6 +302,18 @@
 			// Same as IntersectSegment, except for it casts a ray from pQuery->m_From
 			// in the direction of pQuery->m_Dir.
 			DBOOL		(*CastRay)(IntersectQuery *pQuery, IntersectInfo *pInfo);
+
+			// Returns something like the following is pUnk6:
+			/*
+			struct
+			{
+				byte a;
+				byte b;
+				private byte pad[2];
+				float c[12];
+			}
+			*/
+			DRESULT (*UnknownFunction)(DVector *unk1, DVector *pUnk2, DVector *pUnk3, DVector *pUnk4, short Unk5, void *pUnk6);
 			
 			///////////////// NOT IMPLEMENTED YET /////////////////
 			// Find out what's at a given point (is it inside the world, outside, what
@@ -645,6 +657,15 @@
 			DDWORD	(*GetObjectUserFlags)(HOBJECT hObj);
 			DRESULT	(*SetObjectUserFlags)(HOBJECT hObj, DDWORD flags);
 
+			// Unknown what these flags are for.
+			DDWORD (*GetObjectUnknownFlags)(HOBJECT hObj);
+			DRESULT	(*SetObjectUnknownFlags)(HOBJECT hObj, DDWORD flags);
+
+			// Unknown functions
+			DDWORD (*GetObjectUnknown1)(HOBJECT hObj);
+			// Returns unknown type of struct?
+			void *(*GetObjectUnknown2)(HOBJECT hObj);
+
 			// OBSOLETE: use the CommonLT ones.
 			virtual float	GetObjectMass(HOBJECT hObj)=0;
 			virtual void	SetObjectMass(HOBJECT hObj, float mass)=0;
@@ -725,6 +746,22 @@
 			void	(*SetObjectState)(HOBJECT hObj, int state);
 			int		(*GetObjectState)(HOBJECT hObj);
 
+			// WorldModel (type id 1) and Container (type id 9) objects:
+
+				// Unknown output for the following 2 functions:
+				DRESULT (*UnknownWorldFunction1)(HOBJECT hObj, void *unknown);
+				DRESULT (*UnknownWorldFunction2)(HOBJECT hObj, DDWORD unk1, DDWORD *unk2);
+
+				// If successful, pUnk3 will be 24 bytes or 40 bytes long
+				DRESULT (*UnknownWorldFunction3)(HOBJECT hObj, DDWORD unk1, DDWORD unk2, void *pUnk3);
+
+
+			// Possibly set some object change flags
+			void (*UnknownFunction4)(HOBJECT hObj, DDWORD unknown);
+
+			// Checks object change flags
+			DDWORD (*UnknownFunction5)(HOBJECT hObj, DDWORD unknown);
+
 			// OBSOLETE.  Use PhysicsLT.
 			virtual void GetObjectDims(HOBJECT hObj, DVector *pNewDims)=0;
 			virtual DRESULT	SetObjectDims(HOBJECT hObj, DVector *pNewDims)=0;
@@ -748,6 +785,12 @@
 			// Returns DE_OK or DE_ERROR if not a sprite.
 			// Pass in INVALID_HPOLY to un-clip the sprite.
 			DRESULT	(*ClipSprite)(HOBJECT hObj, HPOLY hPoly);
+
+
+		// hObj must be a Sprite (type id 3) or Unknown (type id 10) for the following group:
+		DRESULT (*UnknownSpriteFunction1)(HOBJECT hObj, float fUnknown);
+		// fUnknown is set to an internal pointer, unknown type of struct
+		DRESULT (*UnknownSpriteFunction2)(HOBJECT hObject, void *fUnknown);
 
 		
 		// Light manipulation.
@@ -807,6 +850,12 @@
 			// Get an animation index from a model.
 			// Returns -1 if the animation doesn't exist (or if the object isn't a model).
 			HMODELANIM	(*GetAnimIndex)(HOBJECT hObj, char *pAnimName);
+
+			///
+			void *(*UnknownModelFunction1)(HOBJECT hObj, DDWORD unknown);
+			DRESULT (*UnknownModelFunction2)(HOBJECT hObj, DDWORD unknown, void *pUnk2);
+			void (*UnknownModelFunction3)(HOBJECT hObj, DVector *unknown);
+			void (*UnknownModelFunction4)(HOBJECT hObj, DVector *unknown);
 
 			// If the object is a model, this sets its current animation.
 			void	(*SetModelAnimation)(HOBJECT hObj, HMODELANIM hAnim);
@@ -889,6 +938,8 @@
 			DRESULT (*LoadWorld)(char *pszWorldFileName, DDWORD flags);
 			DRESULT (*RunWorld)();
 
+		// Unload world?
+		DRESULT (*UnloadWorld)();
 
 		// Network session manipulation
 
@@ -914,6 +965,8 @@
 			// Use FreeFileList when you're done with each list you get.
 			void		(*FreeFileList)(FileEntry *pHead);
 
+		// Gets the world info string from the map
+		DRESULT (*GetWorldInfoString)(char *pszInfo);
 	
 	protected:
 
