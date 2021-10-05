@@ -116,6 +116,8 @@
 			CommonLT*	Common()	{return m_pCommonLT;}
 			CPhysicsLT*	Physics()	{return m_pPhysicsLT;}
 
+			LVideoMgr* Video() {return m_pVideoMgr;}
+
 		
 		// Connection stuff.
 
@@ -414,20 +416,6 @@
 				void	(*SetListener)( DBOOL bListenerInClient, DVector *pPos, DRotation *pRot );
 
 
-		// Video functions.  These functions use Smacker movies.
-
-			// DE_OK, VIDEO_ERROR.
-			// flags is a combination of the PLAYBACK_ flags in de_codes.h.
-			DRESULT		(*StartVideo)(char *pFilename, DDWORD flags);
-			DRESULT		(*StopVideo)();
-
-			// Draws the current video playback to the screen.
-			DRESULT		(*UpdateVideo)();
-			
-			// VIDEO_PLAYING, VIDEO_NOTPLAYING.
-			DRESULT		(*IsVideoPlaying)();
-
-
 		// String functions.  Strings are reference counted objects that cannot
 		// be manipulated.  When you create one with FormatString or CreateString,
 		// the reference count is 1.  When you copy a string with CopyString, the
@@ -647,6 +635,9 @@
 			float			(*GetVarValueFloat)(HCONSOLEVAR hVar);
 			char*			(*GetVarValueString)(HCONSOLEVAR hVar);
 
+			// Unknown
+			void (*SetConsoleGlobalFunction)(void *pUnknown);
+
 		// Access to server console mirror variables...
 
 			// The 'new' accessors for server console variables.  Returns DE_NOTFOUND
@@ -747,9 +738,6 @@
 			void	(*DebugOut)( char *pMsg, ... );
 
 			DBOOL		(*IsCommandOn)(int commandNum);
-
-			// Same as typing a string into the console.
-			void		(*RunConsoleString)(char *pString);
 
 			// Gives you a pointer to the client shell you created.
 			LPCLIENTSHELLDE (*GetClientShell)();

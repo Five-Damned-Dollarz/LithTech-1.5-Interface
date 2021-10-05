@@ -453,31 +453,6 @@
 			DRESULT	(*SetClientViewPos)(HCLIENT hClient, DVector *pPos);
 
 
-		// The 'game console state'.  This is a set of console variables and functions
-		// that is used internally by the application DLLs.  The user can't access this
-		// at all.  It's very useful for tracking global game variables and triggering
-		// them through game objects.
-
-			// Run a string through the game console.  The syntax is the same as any
-			// other console string (semicolons separate commands, and new variable names
-			// create new HCONVARs).
-			void	(*RunGameConString)(char *pString);
-
-			// Sets a console variable.  Creates a new one if it doesn't exist.
-			void	(*SetGameConVar)(char *pName, char *pVal);
-			
-			// Get a handle to a console variable.
-			HCONVAR	(*GetGameConVar)(char *pName);
-			
-			// Get the floating point value of a console variable.  If the hVar is
-			// NULL, then it returns 0.
-			float	(*GetVarValueFloat)(HCONVAR hVar);
-
-			// Get the string value of a console variable.  If the hVar is
-			// NULL, then it returns NULL.
-			char*	(*GetVarValueString)(HCONVAR hVar);
-
-
 		// Helpers.
 
 			// These are used to get the property values from the world file.
@@ -786,11 +761,10 @@
 			// Pass in INVALID_HPOLY to un-clip the sprite.
 			DRESULT	(*ClipSprite)(HOBJECT hObj, HPOLY hPoly);
 
-
-		// hObj must be a Sprite (type id 3) or Unknown (type id 10) for the following group:
-		DRESULT (*UnknownSpriteFunction1)(HOBJECT hObj, float fUnknown);
-		// fUnknown is set to an internal pointer, unknown type of struct
-		DRESULT (*UnknownSpriteFunction2)(HOBJECT hObject, void *fUnknown);
+			// hObj must be a Sprite (type id 3) or Unknown (type id 10) for the following group:
+			DRESULT (*UnknownSpriteFunction1)(HOBJECT hObj, float fUnknown);
+			// fUnknown is set to an internal pointer, unknown type of struct
+			DRESULT (*UnknownSpriteFunction2)(HOBJECT hObject, void *fUnknown);
 
 		
 		// Light manipulation.
