@@ -210,6 +210,10 @@
 			// Returns DE_NOTFOUND if it can't find the file.
 			DRESULT		(*CacheFile)(DDWORD fileType, char *pFilename);
 			
+			// flags must be 0 or 2, otherwise returns LT_UNSUPPORTED
+			virtual DRESULT ThreadLoadFile(void *pUnknown, DDWORD flags)=0;
+			virtual DRESULT UnloadFile(void *pUnknown, DDWORD flags)=0;
+
 			
 		// Helpers..
 
@@ -713,6 +717,10 @@
 			DDWORD	(*GetObjectFlags)(HOBJECT hObj);
 			void	(*SetObjectFlags)(HOBJECT hObj, DDWORD flags);
 
+			// Unknown
+			virtual void *UnknownFunction1(char *pszString, void *pUnknown, DDWORD count)=0;
+			virtual DRESULT UnknownFunction2(char *pszString, DDWORD count)=0;
+
 			// Get/set an object's net flags.  Net flags are a combination of NETFLAG_ defines.
 			virtual DRESULT GetNetFlags(HOBJECT hObj, DDWORD &flags)=0;
 			virtual DRESULT SetNetFlags(HOBJECT hObj, DDWORD flags)=0;
@@ -941,6 +949,9 @@
 
 		// Gets the world info string from the map
 		DRESULT (*GetWorldInfoString)(char *pszInfo);
+
+		// Unknown arguments, pUnk2 is an out
+		virtual DRESULT OpenFile(void *pUnk1, void *pUnk2)=0;
 	
 	protected:
 

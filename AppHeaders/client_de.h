@@ -779,6 +779,12 @@
 			int			(*Parse)(char *pCommand, char **pNewCommandPos, char *argBuffer, char **argPointers, int *nArgs);
 	
 
+		// Video
+
+			virtual void *StartVideo(HVIDEO hVideo, DDWORD unknown)=0;
+			virtual void UnknownVideoFunction1()=0;
+			virtual void UnknownVideoFunction2()=0;
+			virtual void UnknownVideoFunction3()=0;
 
 		// Messaging.
 
@@ -1035,6 +1041,19 @@
 			// Get the sprite control interface for a sprite.  Returns DE_INVALIDPARAMS
 			// if the object is not a sprite.
 			virtual DRESULT GetSpriteControl(HLOCALOBJ hObj, SpriteControl* &pControl)=0;
+
+
+		// Canvas
+
+			// hObj needs to be Unknown (type id 10)
+			virtual DRESULT GetCanvasFn(HLOCALOBJ hObj, void *pUnk1, void *pUnk2)=0;
+			virtual DRESULT SetCanvasFn(HLOCALOBJ hObj, void *pUnk1, void *pUnk2)=0;
+
+			virtual DRESULT GetCanvasRadius(HLOCALOBJ hObj, void *pUnknown)=0;
+			virtual DRESULT SetCanvasRadius(HLOCALOBJ hObj, void *pUnknown)=0;
+
+			virtual DRESULT GetCanvasUnknown(HLOCALOBJ hObj, void *pUnknown)=0;
+			virtual DRESULT SetCanvasUnknown(HLOCALOBJ hObj, void *pUnknown)=0;
 
 
 		// Client-side models..

@@ -53,6 +53,12 @@
 		// Flags is a combination of SETDIMS_ flags above.
 		virtual DRESULT	SetObjectDims(HOBJECT hObj, DVector *pNewDims, DDWORD flags)=0;
 
+		// Unknown
+		virtual DRESULT SetClipFlags(HOBJECT hObj, D_WORD flags)=0;
+		virtual DDWORD GetClipFlags(HOBJECT hObj)=0;
+		virtual DRESULT SetClipToFlags(HOBJECT hObj, D_WORD flags)=0;
+		virtual DDWORD GetClipToFlags(HOBJECT hObj)=0;
+
 		// This function moves an object, colliding/pushing/crushing objects
 		// in its way (if it's solid..)  Flags is a combination of MOVEOBJECT_ flags.
 		virtual DRESULT MoveObject(HOBJECT hObj, DVector *pPos, DDWORD flags)=0;
@@ -67,6 +73,11 @@
 		// when they move.  Default is (0,-2000,0) which simulates gravity.
 		virtual DRESULT GetGlobalForce(DVector &vec)=0;
 		virtual DRESULT SetGlobalForce(DVector &vec)=0;
+
+		//
+		virtual DRESULT SetStoppingVelocity(DVector &vec)=0;
+		//
+		virtual DRESULT UnknownFunction(DVector &vec1, DVector &vec2, DVector &vec3)=0;
 
 	protected:
 		ClientServerType	m_ClientServerType; // Tells if this is on the client or server.

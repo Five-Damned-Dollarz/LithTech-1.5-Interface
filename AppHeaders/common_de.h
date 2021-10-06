@@ -59,6 +59,17 @@
 		// Get the texture flags from a poly.  Returns DE_OK
 		// or DE_ERROR if no world is loaded or hPoly is invalid.
 		virtual DRESULT	GetPolyTextureFlags(HPOLY hPoly, DDWORD *pFlags)=0;
+
+	// Console stuff
+	public: // 32
+		virtual void RunGameConString(char *pString)=0;
+		virtual HCONSOLEVAR UnknownFunc1()=0;
+		virtual HCONSOLEVAR UnknownFunc2()=0;
+		virtual void UnknownFunc3()=0;
+		virtual float GetConsoleFloat(HCONSOLEVAR hConVar)=0;
+		virtual char *GetConsoleString(HCONSOLEVAR hConVar)=0;
+		virtual void RegisterConsoleProgram()=0;
+		virtual void UnRegisterConsoleProgram()=0;
 	};
 
 

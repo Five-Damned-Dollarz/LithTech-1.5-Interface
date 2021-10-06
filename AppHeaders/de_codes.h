@@ -241,6 +241,7 @@
 	#define LT_NOTSAMEGUID					82	// The host you tried to connect to was running a game
 												// with a different app DGUID.
 
+	#define LT_UNSUPPORTED 83
 	#define LT_NO3DSOUNDPROVIDER			83	// Unable to initialize the 3d sound provider
 
 
